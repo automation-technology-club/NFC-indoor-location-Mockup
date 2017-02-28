@@ -4,8 +4,8 @@
 
 #include "BittyBot2.h"
 
-int leftspeed = 175;
-int rightspeed = 175;
+int leftspeed = 75;
+int rightspeed = 75;
 
 int directionFlag = 1; //1 = Face UP, 2 = Face Right, 3 = Face Left, 4 = Face Down
 
@@ -30,23 +30,19 @@ void setup () {
 
 void loop() {
 
-if (directionFlag > 4) {directionFlag = 1;}
+/*if (directionFlag > 4) {directionFlag = 1;}
 findOrientation();
-directionFlag ++;
+Serial.println("Main Loop");
+directionFlag = directionFlag +1;
+Serial.println(directionFlag);
 delay(1000);
+*/
+
+findOrientation();
+Serial.println("Main Loop");
 
 }
 
-void turnleft() {
-  //turn left about 90 degrees
-  bot.Speed(leftspeed,rightspeed);
-  bot.leftTight(360);
-  while (bot.IsRunning()) {
-    
-    Serial.println(bot.IsRunning());
-    bot.update();
-      }
-}
 
 void findOrientation() {
 
@@ -54,16 +50,19 @@ void findOrientation() {
  
  //Up
  if (directionFlag == 1) {
-  while(digitalRead(leftSensor) != 1 && digitalRead(rightSensor) != 1 && digitalRead(centerSensor) != 0) {
- bot.rightTight(100);   
+  if (digitalRead(leftSensor) == 1 && digitalRead(rightSensor) == 1 && digitalRead(centerSensor) == 0) {
+ Serial.println("UP");
+ bot.stop();
+ Serial.println("DONE:");
+ while(1) {} 
   }
-  bot.update();
-  bot.stop();
+  bot.rightTight(100);
  }
 
  //Right
  if (directionFlag == 2) {
   while(digitalRead(leftSensor) != 1 && digitalRead(rightSensor) != 0 && digitalRead(centerSensor) != 0) {
+ Serial.println("Right");
  bot.rightTight(100);   
   }
   bot.update();
@@ -73,6 +72,7 @@ void findOrientation() {
  //Down
  if (directionFlag == 4) {
   while(digitalRead(leftSensor) != 0 && digitalRead(rightSensor) != 0 && digitalRead(centerSensor) != 0) {
+ Serial.println("Down");
  bot.rightTight(100);   
   }
   bot.update();
@@ -82,6 +82,7 @@ void findOrientation() {
 //Left
 if (directionFlag == 3) {
   while(digitalRead(leftSensor) != 0 && digitalRead(rightSensor) != 1 && digitalRead(centerSensor) != 0) {
+ Serial.println("Left");
  bot.rightTight(100);   
   }
   bot.update();
@@ -90,14 +91,4 @@ if (directionFlag == 3) {
 
 }
 
-void turnright() {
-  //turn right about 90 degrees
-  bot.Speed(leftspeed, rightspeed);
-  bot.rightTight(360);
-  while (bot.IsRunning()) {
-    
-    Serial.println(bot.IsRunning());
-    bot.update();
-      }
-}
 
