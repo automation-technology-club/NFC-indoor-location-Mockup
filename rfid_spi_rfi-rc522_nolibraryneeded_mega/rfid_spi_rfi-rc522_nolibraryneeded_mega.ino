@@ -185,19 +185,21 @@ void loop()
     {
                         checksum1 = serNum[0] ^ serNum[1] ^ serNum[2] ^ serNum[3];
                         //Serial.println("The card's number is  : ");
-      Serial.print(2);
-      Serial.print(serNum[0]);
-                        //Serial.print(" , ");
+      Serial.write(12);
+      Serial.write(17);
+      //Serial.print(2);
+     // Serial.print(serNum[0]);
+      //                  Serial.print(" , ");
       //Serial.print(serNum[1],BIN);
-                        //Serial.print(" , ");
+      //                  Serial.print(" , ");
       //Serial.print(serNum[2],BIN);
-                        //Serial.print(" , ");
-      //Serial.print(serNum[3],BIN);
-                        //Serial.print(" , ");
+      //                  Serial.print(" , ");
+     // Serial.print(serNum[3],BIN);
+       //                 Serial.print(" , ");
       //Serial.print(serNum[4],BIN);
                         Serial.print(checksum1);
       //Serial.print(3);
-      Serial.println(" ");
+      //Serial.println(" ");
                         
                         // Should really check all pairs, but for now we'll just use the first
                      

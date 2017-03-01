@@ -11,18 +11,19 @@
  */
 
 
-int start = 20; //mockup starting location, this will be read by the NFC reader
-int target = 1; //Target location to move the robot too
+int start = 107; //mockup starting location, this will be read by the NFC reader
+int target = 67; //Target location to move the robot too
 int targetrow;
 int targetcol;
 int row;
 int col;
-int codes[5][4] = {
-  {1,2,3,4},
-  {5,6,7,8},
-  {9,10,11,12},
-  {13,14,15,16},
-  {17,18,19,20}
+
+//My Gird is 3 x 5 (0,0 to 2,4) - I am using the "Checksum" of the RFID
+//tags
+int codes[3][5] = {
+  {67,121,127,117,107},
+  {137,147,157,103,97},
+  {143,133,187,177,183},
 };  //Map of NFC codes (currently just numbers) will be codes read
 
 void setup() {
@@ -30,8 +31,8 @@ void setup() {
 Serial.begin(9600);
 Serial.println("Current Map:");
 int a, b;
-  for (a = 0; a < 5; a++) {
-    for (b = 0; b < 4; b++) {
+  for (a = 0; a < 3; a++) {
+    for (b = 0; b < 5; b++) {
       Serial.print(codes[a][b]);
       Serial.print(' ');
     }
@@ -58,8 +59,8 @@ void loop() {
 
 void findnumbers(int findnumber) {
 int a, b;
-  for (a = 0; a < 5; a++) {
-    for (b = 0; b < 4; b++) {
+  for (a = 0; a < 3; a++) {
+    for (b = 0; b < 5; b++) {
       if (findnumber == codes[a][b]) {
         row = a;
         col = b;}
