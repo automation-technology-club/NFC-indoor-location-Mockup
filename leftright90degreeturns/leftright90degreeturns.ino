@@ -4,9 +4,9 @@
 
 #include "BittyBot2.h"
 
-int leftspeed = 75;
-int rightspeed = 75;
-int turnDelay = 1250;
+int leftspeed = 50;
+int rightspeed = 50;
+int turnDelay = 1500;
 
 BittyBot bot(44,46,36,38,40,42); //Left Enable, Right Enable, Pin1 for Left, Pin2 for Left, Pin 1 for Right, Pin 2 for Right
 
