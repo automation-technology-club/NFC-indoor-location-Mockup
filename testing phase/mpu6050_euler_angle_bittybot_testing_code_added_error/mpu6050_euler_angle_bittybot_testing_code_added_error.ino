@@ -157,7 +157,12 @@ while (currentHeading != targetHeading ) {
     if (error) {
       bot.stop();
       //error = 0;
-       mpu.resetFIFO();
+       //mpu.resetFIFO();
+       while(error) {
+        bot.stop();
+        Serial.print("Error");
+        readMPU();
+       }
     }
    }
     }
@@ -175,6 +180,7 @@ while (currentHeading != targetHeading ) {
 }
 
 void readMPU() {
+   
     // if programming failed, don't try to do anything
     if (!dmpReady) {error = 1; return;}
 
@@ -207,7 +213,7 @@ void readMPU() {
         error = 1;
 
     // otherwise, check for DMP data ready interrupt (this should happen frequently)
-    } else if (mpuIntStatus & 0x02) {
+    } else if (mpuIntStatus & 0x02) { error = 0;
         // wait for correct available data length, should be a VERY short wait
         while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
 
