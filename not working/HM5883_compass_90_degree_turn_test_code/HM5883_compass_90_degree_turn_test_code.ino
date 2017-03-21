@@ -26,15 +26,21 @@ void setup() {
 
 void loop() {
     
-  turn(90); //turn right
+  turn(-90); //turn right
   bot.stop();
   delay(5000);
-  turn(-90); //turn left back to start
+  turn(90); //turn left back to start
   bot.stop();
   delay(1000);
 turn(-90);
 bot.stop();
 delay(1000);
+turn(-90);
+bot.stop();
+delay(1000);
+turn(90);
+bot.stop();
+
   while(1);
   
   
@@ -87,10 +93,10 @@ void turn(int angle) {
       bot.stop();
       return;
     }
-    if (abs(diff)>114) {
+    /*if (abs(diff)>114) {
       bot.stop();
       return;
-    }
+    }*/
   }
 }
 
