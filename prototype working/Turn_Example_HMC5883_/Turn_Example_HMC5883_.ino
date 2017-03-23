@@ -53,7 +53,7 @@ void loop() {
    *  
    */
   
-  turn(90); 
+  turn(180); 
   bot.stop();
   
   while(1);

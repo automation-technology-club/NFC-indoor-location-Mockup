@@ -18,10 +18,9 @@
  */
 
 #include <SPI.h>
-#include "BittyBot2.h"
+#include "BittyBotCompass.h"
 #include "Keypad.h"
 #include <Wire.h>
-#include "compass.h"
 
  //RFID Setup
 #define  uchar unsigned char
@@ -347,7 +346,6 @@ moveflag = 0;
     //Face UP Turn Right    
     //turnright();
     turn(90); //right
-    bot.stop();
     faceDirection = 2;
     moveflag = 1;
   }
@@ -355,16 +353,13 @@ moveflag = 0;
     //Face UP Turn left
     //turnleft();
     turn(-90); //left
-    bot.stop();
     faceDirection = 4;
     moveflag = 1;
   }
   if (faceDirection == 1 && moveDirection == 3 && moveflag == 0) {
     //Face UP Turn 180 degree to face DOWN
     turn(-90);
-    bot.stop();
     turn(-90);
-    bot.stop();
     //turnleft();
     //turnleft();
     faceDirection = 3;
@@ -374,7 +369,6 @@ moveflag = 0;
 if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
     //Face Right Turn to face UP    
     turn(-90);
-    bot.stop();
     //turnleft();
     faceDirection = 1;
     moveflag = 1;
@@ -382,9 +376,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 2 && moveDirection == 4 && moveflag == 0) {
     //Face Right Turn to face left
     turn(-90);
-    bot.stop();
     turn(-90);
-    bot.stop();
     //turnleft();
     //turnleft();
     faceDirection = 4;
@@ -393,7 +385,6 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 2 && moveDirection == 3 && moveflag == 0) {
     //Face Right Turn to face DOWN
     turn(90);
-    bot.stop();
     //turnright();
     faceDirection = 3;
     moveflag = 1;
@@ -402,7 +393,6 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 4 && moveDirection == 1 && moveflag == 0) {
     //Face left Turn to face UP    
     turn(90);
-    bot.stop();
     //turnright();
     faceDirection = 1;
     moveflag = 1;
@@ -410,9 +400,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 4 && moveDirection == 2 && moveflag == 0) {
     //Face left Turn to face right
     turn(-90);
-    bot.stop();
     turn(-90);
-    bot.stop();
     //turnleft();
     //turnleft();
     faceDirection = 2;
@@ -421,7 +409,6 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 4 && moveDirection == 3 && moveflag == 0) {
     //Face left Turn to face DOWN
     turn(-90);
-    bot.stop();
     //turnleft();
     faceDirection = 3;
     moveflag = 1;
@@ -430,9 +417,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 3 && moveDirection == 1 && moveflag == 0) {
     //Face down Turn to face UP    
     turn(-90);
-    bot.stop();
     turn(-90);
-    bot.stop();
     //turnleft();
     //turnleft();
     faceDirection = 1;
@@ -441,7 +426,6 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 3 && moveDirection == 4 && moveflag == 0) {
     //Face down Turn to face left
     turn(90);
-    bot.stop();
     //turnright();
     faceDirection = 4;
     moveflag = 1;
@@ -449,7 +433,6 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   if (faceDirection == 3 && moveDirection == 2 && moveflag == 0) {
     //Face down Turn to face right
     turn(-90);
-    bot.stop();
     //turnleft();
     faceDirection = 2;
     moveflag = 1;
@@ -500,7 +483,7 @@ void turn(int angle){
 //start turning code
 int originalAngle = bearing;
 int target = originalAngle+angle;
-uint8_t speed=120;
+uint8_t speed=100;
 target=target%360;
 if(target<0) {target+=360;}  
 
