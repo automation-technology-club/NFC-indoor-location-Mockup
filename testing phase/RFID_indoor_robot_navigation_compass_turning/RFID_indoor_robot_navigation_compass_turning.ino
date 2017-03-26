@@ -193,23 +193,32 @@ int codes[ROWS][COLS] = {
 
 int target; 
 
-/*New function to turn robot about 90 degrees - it's not perfect
- * turnleft() - left about 90 degrees
- * turnright() - right about 90 degrees
- *  This is based on time, and trail and error was required to get
- *  it close, surface changes, and changing the speed of the
- *  robot will change the degree it turns.
+/*New function to turn robot about xx degrees - it's not perfect
+ * (calibration helps sometimes, If you need to calibrate it
+ * the robot needs to be manually rotated 360 degrees 5 or 6 times
+ * before time runs out)
+ * 
+ * turn(xx) where xx is a number in degrees.
+ * IE: 90 will turn the robot right about 90 degrees
+ * a negitive number will turn the robot left
+ * (left isn't working 100%) 
+ * 
+ * The new code is based off the HMC5883L Compass and the
+ * Original/Official Arduino Robot library.
+ * 
  */
 
 int leftspeed = 50;
 int rightspeed = 50;
-int turnDelay = 2000;
 int forwardSpeed = 75;
 
 BittyBot bot(44,46,36,38,40,42); //Left Enable, Right Enable, Pin1 for Left, Pin2 for Left, Pin 1 for Right, Pin 2 for Right
 
-/*For now Robot should be started facing "UP" of the grid - Hopefully
- * in the future the robot will figure it's own orientation
+/*
+ * Mar 23, 2017 added manual entry for orientation, self orientation is still what I would like.
+ * 
+ * Robot appears to work facing "UP", "LEFT" and "RIGHT" - there is a unknown issue if it's facing "DOWN"
+ *  
  */
 
 //FaceDirection is used by the robot to track where it's front is facing and how it needs to turn
@@ -241,6 +250,8 @@ void setup() {
   bot.begin();
   Wire.begin();
 
+//Calibration settings for Franklin, Ohio USA - These may or may not work for you 
+//Added if auto calibration is needed.
  compass_x_offset = 96.07;
   compass_y_offset = 483.79;
   compass_z_offset = 570.42;
@@ -258,7 +269,7 @@ void setup() {
   MFRC522_Init(); 
 
   //Serial.println(target);
-  Serial.print("BittyBot RFID");
+  Serial.print("BittyBot  RFID");
   Serial.write(13);
   Serial.print("Indoor Location");
   delay(1000);
@@ -269,7 +280,9 @@ Serial.print("Calibrate? ");
 Serial.write(13);
 Serial.print("1=Yes");
 int tempAnswer = inputTarget();
-if (tempAnswer == 1) { compass_debug = 1; compass_offset_calibration(3); }
+if (tempAnswer == 1) { 
+  compass_debug = 1;
+  compass_offset_calibration(3); }
 
 //Enter Target Location on keypad
 while (targetrow < 0 || targetrow > ROWS-1) {
@@ -294,7 +307,8 @@ target = codes[targetrow][targetcol];
 
   while (faceDirection < 1 || faceDirection > 4) {
 Serial.write(12);
-Serial.print("1=U,2=R,3=L,4=D");
+//1= UP, 2= right, 3=down, 4=left
+Serial.print("1=U,2=R,3=D,4=L");
 Serial.write(13);
 Serial.print("Facing? ");
 faceDirection = inputTarget(); //1= UP, 2= right, 3=down, 4=left
@@ -361,11 +375,9 @@ moveflag = 0;
   }
   if (faceDirection == 1 && moveDirection == 3 && moveflag == 0) {
     //Face UP Turn 180 degree to face DOWN
-    turn(-90);
+    turn(-180);
     bot.stop();
-    turn(-90);
-    bot.stop();
-    //turnleft();
+        //turnleft();
     //turnleft();
     faceDirection = 3;
     moveflag = 1;
@@ -381,9 +393,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   }
   if (faceDirection == 2 && moveDirection == 4 && moveflag == 0) {
     //Face Right Turn to face left
-    turn(-90);
-    bot.stop();
-    turn(-90);
+    turn(-180);
     bot.stop();
     //turnleft();
     //turnleft();
@@ -409,9 +419,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   }
   if (faceDirection == 4 && moveDirection == 2 && moveflag == 0) {
     //Face left Turn to face right
-    turn(-90);
-    bot.stop();
-    turn(-90);
+    turn(-180);
     bot.stop();
     //turnleft();
     //turnleft();
@@ -429,9 +437,7 @@ if (faceDirection == 2 && moveDirection == 1 && moveflag == 0) {
   //Face Down
   if (faceDirection == 3 && moveDirection == 1 && moveflag == 0) {
     //Face down Turn to face UP    
-    turn(-90);
-    bot.stop();
-    turn(-90);
+    turn(-180);
     bot.stop();
     //turnleft();
     //turnleft();
@@ -479,14 +485,14 @@ key=0;
         
     }
 
- /* There is still a issue * sometimes the robot turns right a little
-   *  when it should turn left.
-   *  
+ /* 
    *  A negitive angle/degree should turn the robot left
    *  A positive angle/degree should turn the robot right
    *  
    *  Right appears to be a lot more consistant than turning left.
    *  
+   *  180 degrees turns more than 180 degrees in either direction
+   *  ??
    */
 
 void turn(int angle){
@@ -650,28 +656,6 @@ moveDirection = 0;
     Serial.println("We are at target.");
     while(1) {}
   }
-}
-
-void turnleft() {
-  //turn left about 90 degrees
-  bot.Speed(leftspeed,rightspeed);
-  bot.leftTight(turnDelay); //360
-  while (bot.IsRunning()) {
-    
-    Serial.println(bot.IsRunning());
-    bot.update();
-      }
-}
-
-void turnright() {
-  //turn right about 90 degrees
-  bot.Speed(leftspeed, rightspeed);
-  bot.rightTight(turnDelay); //360
-  while (bot.IsRunning()) {
-    
-    Serial.println(bot.IsRunning());
-    bot.update();
-      }
 }
 
 void readRFID() {
